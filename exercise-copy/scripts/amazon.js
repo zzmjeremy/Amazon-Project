@@ -1,5 +1,3 @@
-import { cart, addToCart } from "../data/cart.js";
-import { products } from "../data/products.js";
 let productsHTML = "";
 
 products.forEach((product) => {
@@ -32,7 +30,7 @@ products.forEach((product) => {
           <!-- have 2 decimals -->
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -48,7 +46,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-cart-${product.id}">
             <img src="images/icons/checkmark.png" />
             Added
           </div>
@@ -62,21 +60,54 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-function updateCartQuantity() {
-  let cartQuantity = 0;
-
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
-
-  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
-}
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
-    const productId = button.dataset.productId;
-    //from kabab case product-id to camel case productId
+    const { productId } = button.dataset;
+    //from kabob case product-id to camel case productId
+    const productCount = document.querySelector(
+      `.js-quantity-selector-${productId}`
+    ).value;
+    const productNumber = Number(productCount);
 
-    addToCart(productId);
-    updateCartQuantity();
+
+   const cartElement = document.querySelector(`.js-cart-${productId}`);
+   cartElement.classList.add("display");
+
+    // 清除之前的计时器，如果存在的话
+    if (cartElement.dataset.timeoutId) {
+      clearTimeout(cartElement.dataset.timeoutId);
+    }
+
+    // 设置新的计时器并存储它的 ID
+    const timeoutId = setTimeout(() => {
+      cartElement.classList.remove("display");
+    }, 2000);
+    cartElement.dataset.timeoutId = timeoutId;
+
+
+
+    let matchingItem;
+
+    cart.forEach((item) => {
+      if (productId === item.productId) {
+        matchingItem = item;
+      }
+    });
+    if (matchingItem) {
+      matchingItem.quantity += productNumber;
+    } else {
+      cart.push({
+        productId,
+        quantity: productNumber,
+      });
+    }
+
+    let cartQuantity = 0;
+
+    cart.forEach((item) => {
+      cartQuantity += item.quantity;
+    });
+
+    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
   });
 });
