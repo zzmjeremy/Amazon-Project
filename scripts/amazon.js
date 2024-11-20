@@ -1,4 +1,4 @@
-import { cart, addToCart } from "../data/cart.js";
+import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -28,7 +28,9 @@ products.forEach((product) => {
             }</div>
           </div>
 
-          <div class="product-price">$${formatCurrency(product.priceCents)}</div>
+          <div class="product-price">$${formatCurrency(
+            product.priceCents
+          )}</div>
           <!-- have 2 decimals -->
 
           <div class="product-quantity-container">
@@ -62,14 +64,15 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
-function updateCartQuantity() {
-  let cartQuantity = 0;
+updateCartQuantity();
 
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
-
-  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+export function updateCartQuantity() {
+  const cartQuantity = calculateCartQuantity();
+  if (cartQuantity > 0) {
+    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+  } else {
+    document.querySelector(".js-cart-quantity").innerHTML = "";
+  }
 }
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
