@@ -18,7 +18,31 @@ function saveToStorage() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
+function addedIcon(productId) {
+  //set added icon
+  const cartElement = document.querySelector(`.js-cart-${productId}`);
+  cartElement.classList.add("display");
+
+  // 清除之前的计时器，如果存在的话
+  if (cartElement.dataset.timeoutId) {
+    clearTimeout(cartElement.dataset.timeoutId);
+  }
+
+  // 设置新的计时器并存储它的 ID
+  const timeoutId = setTimeout(() => {
+    cartElement.classList.remove("display");
+  }, 2000);
+  cartElement.dataset.timeoutId = timeoutId;
+}
+
+
 export function addToCart(productId) {
+  addedIcon(productId);
+  //added to cart
+    const productCount = document.querySelector(
+      `.js-quantity-selector-${productId}`
+    ).value;
+    const productNumber = Number(productCount);
   let matchingItem;
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {
@@ -26,12 +50,12 @@ export function addToCart(productId) {
     }
   });
   if (matchingItem) {
-    matchingItem.quantity += 1;
+    matchingItem.quantity += productNumber;
   } else {
     cart.push({
       productId: productId,
-      quantity: 1,
-      deliveryOptionId:"1"
+      quantity: productNumber,
+      deliveryOptionId: "1",
     });
   }
   saveToStorage();
@@ -69,16 +93,15 @@ export function updateQuantity(productId, newQuantity) {
   saveToStorage();
 }
 
+export function updateDeliveryOption(productId, deliveryOptionId) {
+  let matchingItem;
+  cart.forEach((cartItem) => {
+    if (productId === cartItem.productId) {
+      matchingItem = cartItem;
+    }
+  });
 
-export function updateDeliveryOption(productId, deliveryOptionId){
- let matchingItem;
- cart.forEach((cartItem) => {
-   if (productId === cartItem.productId) {
-     matchingItem = cartItem;
-   }
- });
+  matchingItem.deliveryOptionId = deliveryOptionId;
 
- matchingItem.deliveryOptionId = deliveryOptionId;
-
- saveToStorage();
+  saveToStorage();
 }
