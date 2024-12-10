@@ -23,26 +23,8 @@ function saveToStorage() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-function addedIcon(productId) {
-  //set added icon
-  const cartElement = document.querySelector(`.js-cart-${productId}`);
-  cartElement.classList.add("display");
-  // 清除之前的计时器，如果存在的话
-  if (cartElement.dataset.timeoutId) {
-    clearTimeout(cartElement.dataset.timeoutId);
-  }
-
-  // 设置新的计时器并存储它的 ID
-  const timeoutId = setTimeout(() => {
-    cartElement.classList.remove("display");
-  }, 2000);
-  cartElement.dataset.timeoutId = timeoutId;
-}
 
 export function addToCart(productId, productNumber) {
-
-  addedIcon(productId);
-  //added to cart
   let matchingItem;
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {
