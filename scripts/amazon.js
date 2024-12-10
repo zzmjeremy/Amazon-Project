@@ -20,16 +20,16 @@ products.forEach((product) => {
           <div class="product-rating-container">
             <img
               class="product-rating-stars"
-              src="images/ratings/rating-${product.rating.stars * 10}.png"
+              src="${product.getStarsUrl()}"
             />
             <div class="product-rating-count link-primary">${
               product.rating.count
             }</div>
           </div>
 
-          <div class="product-price">$${formatCurrency(
-            product.priceCents
-          )}</div>
+          <div class="product-price">
+          ${product.getPrice()}
+          </div>
           <!-- have 2 decimals -->
 
           <div class="product-quantity-container">
