@@ -23,11 +23,10 @@ function saveToStorage() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-export function addedIcon(productId) {
+function addedIcon(productId) {
   //set added icon
   const cartElement = document.querySelector(`.js-cart-${productId}`);
   cartElement.classList.add("display");
-
   // 清除之前的计时器，如果存在的话
   if (cartElement.dataset.timeoutId) {
     clearTimeout(cartElement.dataset.timeoutId);
@@ -41,6 +40,7 @@ export function addedIcon(productId) {
 }
 
 export function addToCart(productId, productNumber) {
+
   addedIcon(productId);
   //added to cart
   let matchingItem;

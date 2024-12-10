@@ -1,6 +1,5 @@
 import {
   cart,
-  addedIcon,
   addToCart,
   calculateCartQuantity,
 } from "../data/cart.js";
