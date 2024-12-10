@@ -8,7 +8,6 @@ import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 let productsHTML = "";
-
 products.forEach((product) => {
   productsHTML += `
    <div class="product-container">
@@ -71,6 +70,7 @@ document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
 updateCartQuantity();
 
+
 export function updateCartQuantity() {
   const cartQuantity = calculateCartQuantity();
   if (cartQuantity > 0) {
@@ -79,6 +79,8 @@ export function updateCartQuantity() {
     document.querySelector(".js-cart-quantity").innerHTML = "";
   }
 }
+
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
@@ -87,7 +89,6 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
         `.js-quantity-selector-${productId}`
       ).value;
       const productNumber = Number(productCount);
-    addedIcon(productId);
     addToCart(productId, productNumber);
     updateCartQuantity();
   });

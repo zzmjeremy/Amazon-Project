@@ -40,10 +40,9 @@ export function addedIcon(productId) {
   cartElement.dataset.timeoutId = timeoutId;
 }
 
-export function addToCart(productId,productNumber) {
-  
+export function addToCart(productId, productNumber) {
+  addedIcon(productId);
   //added to cart
-
   let matchingItem;
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {
