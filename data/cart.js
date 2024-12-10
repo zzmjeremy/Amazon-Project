@@ -1,24 +1,29 @@
-export let cart = JSON.parse(localStorage.getItem("cart"));
-if (!cart) {
-  cart = [
-    {
-      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-      quantity: 2,
-      deliveryOptionId: "1",
-    },
-    {
-      productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-      quantity: 1,
-      deliveryOptionId: "2",
-    },
-  ];
-}
+export let cart;
 
+loadFromStorage();
+
+export function loadFromStorage() {
+  cart = JSON.parse(localStorage.getItem("cart"));
+  if (!cart) {
+    cart = [
+      {
+        productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+        quantity: 2,
+        deliveryOptionId: "1",
+      },
+      {
+        productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+        quantity: 1,
+        deliveryOptionId: "2",
+      },
+    ];
+  }
+}
 function saveToStorage() {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-function addedIcon(productId) {
+export function addedIcon(productId) {
   //set added icon
   const cartElement = document.querySelector(`.js-cart-${productId}`);
   cartElement.classList.add("display");
@@ -35,14 +40,10 @@ function addedIcon(productId) {
   cartElement.dataset.timeoutId = timeoutId;
 }
 
-
-export function addToCart(productId) {
-  addedIcon(productId);
+export function addToCart(productId,productNumber) {
+  
   //added to cart
-    const productCount = document.querySelector(
-      `.js-quantity-selector-${productId}`
-    ).value;
-    const productNumber = Number(productCount);
+
   let matchingItem;
   cart.forEach((cartItem) => {
     if (productId === cartItem.productId) {

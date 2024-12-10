@@ -1,4 +1,9 @@
-import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
+import {
+  cart,
+  addedIcon,
+  addToCart,
+  calculateCartQuantity,
+} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
@@ -78,8 +83,12 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
     //from kabab case product-id to camel case productId
-
-    addToCart(productId);
+      const productCount = document.querySelector(
+        `.js-quantity-selector-${productId}`
+      ).value;
+      const productNumber = Number(productCount);
+    addedIcon(productId);
+    addToCart(productId, productNumber);
     updateCartQuantity();
   });
 });
