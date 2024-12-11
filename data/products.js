@@ -53,7 +53,53 @@ class Clothing extends Product {
     <a href="${this.sizeChartLink}" target = "_blank" >Size chart</a>
     `;
   }
-} //reuse code, more specific features
+}
+
+class Appliance extends Product {
+  instructionLink;
+  warrantyLink;
+
+  constructor(productDetails) {
+    super(productDetails);
+    this.instructionLink = productDetails.instructionLink;
+    this.warrantyLink = productDetails.warrantyLink;
+  }
+
+  extraInfoHTML(){
+    return `
+    <a href=${this.instructionLink} target="_blank">Instructions</a>
+    <a href=${this.warrantyLink} target="_blank">Warranty</a>
+    `;
+  }
+}
+
+//reuse code, more specific features
+
+// const date = new Date();
+// console.log(date);
+// console.log(date.toLocaleTimeString());
+
+// console.log(this);
+
+// const object2 = {
+//   a: 2,
+//   b: this.a,
+// };//object2 has not been created yet, so b is undefined
+
+// function logThis() {
+//   console.log(this);
+// }
+
+// logThis(); //undefined
+// logThis.call("hello"); // the first parameter of call function will set this to hello
+
+// this; //undefined
+// const object3 = {
+//   method: () => {
+//     console.log(this); //also undefined
+//   },
+// };
+// object3.method();
 
 export const products = [
   {
@@ -101,6 +147,9 @@ export const products = [
     },
     priceCents: 1899,
     keywords: ["toaster", "kitchen", "appliances"],
+    type: "appliance",
+    instructionLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "3ebe75dc-64d2-4137-8860-1f5a963e534b",
@@ -235,6 +284,9 @@ export const products = [
     },
     priceCents: 3074,
     keywords: ["water boiler", "appliances", "kitchen"],
+    type: "appliance",
+    instructionLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "6b07d4e7-f540-454e-8a1e-363f25dbae7d",
@@ -492,6 +544,9 @@ export const products = [
     },
     priceCents: 10747,
     keywords: ["food blenders", "kitchen", "appliances"],
+    type: "appliance",
+    instructionLink: "images/appliance-instructions.png",
+    warrantyLink: "images/appliance-warranty.png",
   },
   {
     id: "36c64692-677f-4f58-b5ec-0dc2cf109e27",
@@ -530,6 +585,8 @@ export const products = [
   if (productDetails.type === "clothing") {
     return new Clothing(productDetails);
     //return will immediately close the function, so there's no need to write "else"
+  } else if (productDetails.type === "appliance") {
+    return new Appliance(productDetails);
   }
   return new Product(productDetails);
 });
