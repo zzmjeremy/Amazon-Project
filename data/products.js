@@ -65,7 +65,7 @@ class Appliance extends Product {
     this.warrantyLink = productDetails.warrantyLink;
   }
 
-  extraInfoHTML(){
+  extraInfoHTML() {
     return `
     <a href=${this.instructionLink} target="_blank">Instructions</a>
     <a href=${this.warrantyLink} target="_blank">Warranty</a>
@@ -101,6 +101,31 @@ class Appliance extends Product {
 // };
 // object3.method();
 
+export let products = [];
+
+export function loadProducts(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener("load", () => {
+    products = JSON.parse(xhr.response).map((productDetails) => {
+      if (productDetails.type === "clothing") {
+        return new Clothing(productDetails);
+        //return will immediately close the function, so there's no need to write "else"
+      } else if (productDetails.type === "appliance") {
+        return new Appliance(productDetails);
+      }
+      return new Product(productDetails);
+    });
+    console.log("load products");
+
+    fun();
+  });
+
+  xhr.open("GET", "https://supersimplebackend.dev/products");
+  xhr.send();
+}
+
+/*
 export const products = [
   {
     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
@@ -590,3 +615,4 @@ export const products = [
   }
   return new Product(productDetails);
 });
+*/

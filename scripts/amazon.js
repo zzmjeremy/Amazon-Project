@@ -1,10 +1,13 @@
 import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
-let productsHTML = "";
-products.forEach((product) => {
-  productsHTML += `
+loadProducts(renderProductsGrid);
+
+function renderProductsGrid() {
+  let productsHTML = "";
+  products.forEach((product) => {
+    productsHTML += `
    <div class="product-container">
           <div class="product-image-container">
             <img
@@ -62,47 +65,48 @@ products.forEach((product) => {
           }">Add to Cart</button>
         </div>
   `;
-});
-
-document.querySelector(".js-products-grid").innerHTML = productsHTML;
-
-updateCartQuantity();
-
-export function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
-  if (cartQuantity > 0) {
-    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
-  } else {
-    document.querySelector(".js-cart-quantity").innerHTML = "";
-  }
-}
-
-function addToCartIcon(productId) {
-  //set added icon
-  const cartElement = document.querySelector(`.js-cart-${productId}`);
-  cartElement.classList.add("display");
-  // 清除之前的计时器，如果存在的话
-  if (cartElement.dataset.timeoutId) {
-    clearTimeout(cartElement.dataset.timeoutId);
-  }
-
-  // 设置新的计时器并存储它的 ID
-  const timeoutId = setTimeout(() => {
-    cartElement.classList.remove("display");
-  }, 2000);
-  cartElement.dataset.timeoutId = timeoutId;
-}
-
-document.querySelectorAll(".js-add-to-cart").forEach((button) => {
-  button.addEventListener("click", () => {
-    const productId = button.dataset.productId;
-    //from kabab case product-id to camel case productId
-    const productCount = document.querySelector(
-      `.js-quantity-selector-${productId}`
-    ).value;
-    const productNumber = Number(productCount);
-    addToCartIcon(productId);
-    addToCart(productId, productNumber);
-    updateCartQuantity();
   });
-});
+
+  document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+  updateCartQuantity();
+
+ function updateCartQuantity() {
+    const cartQuantity = calculateCartQuantity();
+    if (cartQuantity > 0) {
+      document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+    } else {
+      document.querySelector(".js-cart-quantity").innerHTML = "";
+    }
+  }
+
+  function addToCartIcon(productId) {
+    //set added icon
+    const cartElement = document.querySelector(`.js-cart-${productId}`);
+    cartElement.classList.add("display");
+    // 清除之前的计时器，如果存在的话
+    if (cartElement.dataset.timeoutId) {
+      clearTimeout(cartElement.dataset.timeoutId);
+    }
+
+    // 设置新的计时器并存储它的 ID
+    const timeoutId = setTimeout(() => {
+      cartElement.classList.remove("display");
+    }, 2000);
+    cartElement.dataset.timeoutId = timeoutId;
+  }
+
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = button.dataset.productId;
+      //from kabab case product-id to camel case productId
+      const productCount = document.querySelector(
+        `.js-quantity-selector-${productId}`
+      ).value;
+      const productNumber = Number(productCount);
+      addToCartIcon(productId);
+      addToCart(productId, productNumber);
+      updateCartQuantity();
+    });
+  });
+}
