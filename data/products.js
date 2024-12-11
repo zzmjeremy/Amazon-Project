@@ -1,4 +1,4 @@
-import {formatCurrency} from "../scripts/utils/money.js"
+import { formatCurrency } from "../scripts/utils/money.js";
 export function getProduct(productId) {
   let matchingProduct;
   products.forEach((product) => {
@@ -32,9 +32,28 @@ class Product {
   getPrice() {
     return `$${formatCurrency(this.priceCents)}`;
   }
+
+  extraInfoHTML() {
+    return "";
+  }
 }
 
+class Clothing extends Product {
+  sizeChartLink;
 
+  constructor(productDetails) {
+    super(productDetails);
+    //calls the constructor of the parent class
+    this.sizeChartLink = productDetails.sizeChartLink;
+  }
+
+  extraInfoHTML() {
+    // super.extraInfoHTML();
+    return `
+    <a href="${this.sizeChartLink}" target = "_blank" >Size chart</a>
+    `;
+  }
+} //reuse code, more specific features
 
 export const products = [
   {
@@ -508,5 +527,9 @@ export const products = [
     keywords: ["sweaters", "hoodies", "apparel", "mens"],
   },
 ].map((productDetails) => {
+  if (productDetails.type === "clothing") {
+    return new Clothing(productDetails);
+    //return will immediately close the function, so there's no need to write "else"
+  }
   return new Product(productDetails);
 });
