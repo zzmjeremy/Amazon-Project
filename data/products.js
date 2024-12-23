@@ -102,6 +102,30 @@ class Appliance extends Product {
 // object3.method();
 
 export let products = [];
+export function loadProductsFetch() {
+  const promise = fetch("https://supersimplebackend.dev/products")
+    .then((response) => {
+      return response.json(); // when we return a promise(reponse.json() is a promise), we will wait the promise to finish before we go to the next step
+    })
+    .then((productsData) => {
+      // productsData is the products in response.json()
+      products = productsData.map((productDetails) => {
+        if (productDetails.type === "clothing") {
+          return new Clothing(productDetails);
+          //return will immediately close the function, so there's no need to write "else"
+        } else if (productDetails.type === "appliance") {
+          return new Appliance(productDetails);
+        }
+        return new Product(productDetails);
+      });
+      console.log("load products");
+    });
+
+  return promise;
+}
+// loadProductsFetch().then(() =>{
+//   console.log("next step")
+// });
 
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
