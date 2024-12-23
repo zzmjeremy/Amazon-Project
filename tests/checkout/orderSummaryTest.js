@@ -8,7 +8,7 @@ describe("test suite: renderOrderSummary", () => {
 
   beforeAll((done) => {
     loadProducts(() => {
-      done(); //done() lets us control when to go to the next step
+      done(); //done() lets us control when to go to the next step, we will go to the next step only when we call done()
     });
   });
 
